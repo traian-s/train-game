@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/train-game/static/css/main.23456c0a.chunk.css",
+    "main.css": "/train-game/static/css/main.7899d02d.chunk.css",
     "main.js": "/train-game/static/js/main.dee3cfd4.chunk.js",
     "main.js.map": "/train-game/static/js/main.dee3cfd4.chunk.js.map",
     "runtime~main.js": "/train-game/static/js/runtime~main.86114eda.js",
@@ -8,9 +8,9 @@
     "static/js/2.02da747d.chunk.js": "/train-game/static/js/2.02da747d.chunk.js",
     "static/js/2.02da747d.chunk.js.map": "/train-game/static/js/2.02da747d.chunk.js.map",
     "index.html": "/train-game/index.html",
-    "precache-manifest.9f7eeb894e2b7a9cd35512527317dc78.js": "/train-game/precache-manifest.9f7eeb894e2b7a9cd35512527317dc78.js",
+    "precache-manifest.5c7751421fba26916c22699c3fceb291.js": "/train-game/precache-manifest.5c7751421fba26916c22699c3fceb291.js",
     "service-worker.js": "/train-game/service-worker.js",
-    "static/css/main.23456c0a.chunk.css.map": "/train-game/static/css/main.23456c0a.chunk.css.map",
+    "static/css/main.7899d02d.chunk.css.map": "/train-game/static/css/main.7899d02d.chunk.css.map",
     "static/js/2.02da747d.chunk.js.LICENSE.txt": "/train-game/static/js/2.02da747d.chunk.js.LICENSE.txt"
   }
 }
