@@ -1,0 +1,46 @@
+#root {
+  display: flex;
+}
+
+.controls {
+  position: absolute;
+  left: 0;
+}
+
+.App {
+  display: flex;
+  width: 100%;
+  max-width: 1024px;
+  margin: auto;
+}
+
+.game-board {
+  display: flex;
+  margin: auto;
+  width: 80%;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+
+  .cell {
+    display: flex;
+    border-top: solid 1px #000;
+    border-left: solid 1px #000;
+    margin-right: -1px;
+
+
+    &:before {
+      content: '';
+      padding-top: 100%;
+      display: block;
+    }
+
+    &.right-edge {
+      border-right: solid 1px #000;
+    }
+
+    &.bottom-edge {
+      border-bottom: solid 1px #000;
+    }
+  }
+}
