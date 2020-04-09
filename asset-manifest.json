@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/train-game/static/css/main.27d013b1.chunk.css",
-    "main.js": "/train-game/static/js/main.951ffbde.chunk.js",
-    "main.js.map": "/train-game/static/js/main.951ffbde.chunk.js.map",
+    "main.css": "/train-game/static/css/main.23456c0a.chunk.css",
+    "main.js": "/train-game/static/js/main.dee3cfd4.chunk.js",
+    "main.js.map": "/train-game/static/js/main.dee3cfd4.chunk.js.map",
     "runtime~main.js": "/train-game/static/js/runtime~main.86114eda.js",
     "runtime~main.js.map": "/train-game/static/js/runtime~main.86114eda.js.map",
     "static/js/2.02da747d.chunk.js": "/train-game/static/js/2.02da747d.chunk.js",
     "static/js/2.02da747d.chunk.js.map": "/train-game/static/js/2.02da747d.chunk.js.map",
     "index.html": "/train-game/index.html",
-    "precache-manifest.77b694e89164cd374d465a1c8eaa0d0e.js": "/train-game/precache-manifest.77b694e89164cd374d465a1c8eaa0d0e.js",
+    "precache-manifest.9f7eeb894e2b7a9cd35512527317dc78.js": "/train-game/precache-manifest.9f7eeb894e2b7a9cd35512527317dc78.js",
     "service-worker.js": "/train-game/service-worker.js",
-    "static/css/main.27d013b1.chunk.css.map": "/train-game/static/css/main.27d013b1.chunk.css.map",
+    "static/css/main.23456c0a.chunk.css.map": "/train-game/static/css/main.23456c0a.chunk.css.map",
     "static/js/2.02da747d.chunk.js.LICENSE.txt": "/train-game/static/js/2.02da747d.chunk.js.LICENSE.txt"
   }
 }
