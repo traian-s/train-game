@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/train-game/static/css/main.27d013b1.chunk.css",
+    "main.js": "/train-game/static/js/main.951ffbde.chunk.js",
+    "main.js.map": "/train-game/static/js/main.951ffbde.chunk.js.map",
+    "runtime~main.js": "/train-game/static/js/runtime~main.86114eda.js",
+    "runtime~main.js.map": "/train-game/static/js/runtime~main.86114eda.js.map",
+    "static/js/2.02da747d.chunk.js": "/train-game/static/js/2.02da747d.chunk.js",
+    "static/js/2.02da747d.chunk.js.map": "/train-game/static/js/2.02da747d.chunk.js.map",
+    "index.html": "/train-game/index.html",
+    "precache-manifest.77b694e89164cd374d465a1c8eaa0d0e.js": "/train-game/precache-manifest.77b694e89164cd374d465a1c8eaa0d0e.js",
+    "service-worker.js": "/train-game/service-worker.js",
+    "static/css/main.27d013b1.chunk.css.map": "/train-game/static/css/main.27d013b1.chunk.css.map",
+    "static/js/2.02da747d.chunk.js.LICENSE.txt": "/train-game/static/js/2.02da747d.chunk.js.LICENSE.txt"
+  }
+}
