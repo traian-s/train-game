@@ -9,7 +9,7 @@ class Board extends Component {
       props: { rows, columns }
     } = this;
     return (
-      <div className={'game-board'} style={{ width: `calc(80px * ${rows})` }}>
+      <div className={'game-board'} style={{ width: `calc(80px * ${columns})` }}>
         {[...Array(parseInt(rows))].map((_, i) => {
           return [...Array(parseInt(columns))].map((_, j) => {
             return (
