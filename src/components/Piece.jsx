@@ -30,7 +30,7 @@ export class Piece extends Component {
 
   setRotation = rotation => {
     this.setState(state => ({
-      tempRotate: Math.abs(state.rotate + rotation) === 360 ? 0 : state.tempRotate + rotation
+      tempRotate: Math.abs(state.tempRotate + rotation) === 360 ? 0 : state.tempRotate + rotation
     }));
   };
 
