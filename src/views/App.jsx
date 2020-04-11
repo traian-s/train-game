@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setColumns, setRows } from 'store/actions/ui';
+import { setColumns, setRows } from 'store/actions/board';
 import Board from 'views/Board';
 
 function App({ rows, columns, setRows, setColumns }) {
@@ -29,8 +29,8 @@ function App({ rows, columns, setRows, setColumns }) {
 }
 
 const mapStateToProps = state => ({
-  rows: state.ui.board.rows,
-  columns: state.ui.board.columns
+  rows: state.board.config.rows,
+  columns: state.board.config.columns
 });
 
 const mapDispatchToProps = {

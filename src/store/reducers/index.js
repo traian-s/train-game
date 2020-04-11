@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import uiReducer from './ui';
+import boardReducer from './board';
 
 export const reducers = combineReducers({
-  ui: uiReducer
+  board: boardReducer
 });
