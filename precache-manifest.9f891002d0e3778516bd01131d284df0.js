@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c487790ffc51fd1dd32c726861449b88",
+    "revision": "852275f79ad7023e881bcda168b7b104",
     "url": "/train-game/index.html"
   },
   {
-    "revision": "ec6b265ecc6b024fba85",
-    "url": "/train-game/static/css/main.5923d6a5.chunk.css"
+    "revision": "fcc2c278d887e11fb3bd",
+    "url": "/train-game/static/css/main.f013ea0c.chunk.css"
   },
   {
     "revision": "4b40306ba6dd35757627",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/train-game/static/js/2.5c322d1e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ec6b265ecc6b024fba85",
-    "url": "/train-game/static/js/main.9aed6a9b.chunk.js"
+    "revision": "fcc2c278d887e11fb3bd",
+    "url": "/train-game/static/js/main.0a053854.chunk.js"
   },
   {
     "revision": "ae10caeee4ca2d845f1c",
