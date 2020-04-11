@@ -11,6 +11,12 @@ export const initBoard = () => (dispatch, getState) => {
     }
   } = getState();
 
-  const matrix = new Array(rows).fill(0).map(() => new Array(columns).fill({ occupied: false }));
+  const defaultPiece = {
+    occupied: false,
+    type: '',
+    rotation: 0
+  };
+
+  const matrix = new Array(rows).fill(0).map(() => new Array(columns).fill({ ...defaultPiece }));
   dispatch(setBoard(matrix));
 };

@@ -36,8 +36,8 @@ class Board extends Component {
                 key={`cell-${i}${j}`}
               >
                 <Piece
-                  type={['line', 'curve', 'switch', 'bridge'][Math.floor(Math.random() * 4)]}
-                  rotate={[0, 90, 180, 270][Math.floor(Math.random() * 4)]}
+                  x={i}
+                  y={j}
                 />
               </div>
             );
