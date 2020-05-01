@@ -1,20 +1,22 @@
 {
   "files": {
-    "main.css": "/train-game/static/css/main.f013ea0c.chunk.css",
-    "main.js": "/train-game/static/js/main.0a053854.chunk.js",
-    "main.js.map": "/train-game/static/js/main.0a053854.chunk.js.map",
+    "main.css": "/train-game/static/css/main.d9e279f6.chunk.css",
+    "main.js": "/train-game/static/js/main.4adbcdbf.chunk.js",
+    "main.js.map": "/train-game/static/js/main.4adbcdbf.chunk.js.map",
     "runtime~main.js": "/train-game/static/js/runtime~main.86114eda.js",
     "runtime~main.js.map": "/train-game/static/js/runtime~main.86114eda.js.map",
-    "static/js/2.5c322d1e.chunk.js": "/train-game/static/js/2.5c322d1e.chunk.js",
-    "static/js/2.5c322d1e.chunk.js.map": "/train-game/static/js/2.5c322d1e.chunk.js.map",
+    "static/js/2.d64b100c.chunk.js": "/train-game/static/js/2.d64b100c.chunk.js",
+    "static/js/2.d64b100c.chunk.js.map": "/train-game/static/js/2.d64b100c.chunk.js.map",
     "index.html": "/train-game/index.html",
-    "precache-manifest.9f891002d0e3778516bd01131d284df0.js": "/train-game/precache-manifest.9f891002d0e3778516bd01131d284df0.js",
+    "precache-manifest.af8739a6bb56ffc039b0ec0fbe685ce8.js": "/train-game/precache-manifest.af8739a6bb56ffc039b0ec0fbe685ce8.js",
     "service-worker.js": "/train-game/service-worker.js",
-    "static/css/main.f013ea0c.chunk.css.map": "/train-game/static/css/main.f013ea0c.chunk.css.map",
-    "static/js/2.5c322d1e.chunk.js.LICENSE.txt": "/train-game/static/js/2.5c322d1e.chunk.js.LICENSE.txt",
+    "static/css/main.d9e279f6.chunk.css.map": "/train-game/static/css/main.d9e279f6.chunk.css.map",
+    "static/js/2.d64b100c.chunk.js.LICENSE.txt": "/train-game/static/js/2.d64b100c.chunk.js.LICENSE.txt",
     "static/media/bridge.svg": "/train-game/static/media/bridge.2b4139f0.svg",
     "static/media/curve.svg": "/train-game/static/media/curve.e4a33090.svg",
+    "static/media/gara.svg": "/train-game/static/media/gara.830c43ab.svg",
     "static/media/line.svg": "/train-game/static/media/line.2e3e852f.svg",
+    "static/media/padure.svg": "/train-game/static/media/padure.7a9c9b0c.svg",
     "static/media/switch.svg": "/train-game/static/media/switch.90588404.svg"
   }
 }

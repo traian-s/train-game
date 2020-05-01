@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "852275f79ad7023e881bcda168b7b104",
+    "revision": "7c625aae63b4d52307ca51bb6a9b052a",
     "url": "/train-game/index.html"
   },
   {
-    "revision": "fcc2c278d887e11fb3bd",
-    "url": "/train-game/static/css/main.f013ea0c.chunk.css"
+    "revision": "273a0d6789bfdac2ad9b",
+    "url": "/train-game/static/css/main.d9e279f6.chunk.css"
   },
   {
-    "revision": "4b40306ba6dd35757627",
-    "url": "/train-game/static/js/2.5c322d1e.chunk.js"
+    "revision": "468f833175993d1c7d76",
+    "url": "/train-game/static/js/2.d64b100c.chunk.js"
   },
   {
     "revision": "c64c486544348f10a6d6c716950bc223",
-    "url": "/train-game/static/js/2.5c322d1e.chunk.js.LICENSE.txt"
+    "url": "/train-game/static/js/2.d64b100c.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "fcc2c278d887e11fb3bd",
-    "url": "/train-game/static/js/main.0a053854.chunk.js"
+    "revision": "273a0d6789bfdac2ad9b",
+    "url": "/train-game/static/js/main.4adbcdbf.chunk.js"
   },
   {
     "revision": "ae10caeee4ca2d845f1c",
@@ -32,8 +32,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/train-game/static/media/curve.e4a33090.svg"
   },
   {
+    "revision": "830c43ab8043d2343a71b40284e9109f",
+    "url": "/train-game/static/media/gara.830c43ab.svg"
+  },
+  {
     "revision": "2e3e852f24457ed98e8a45159012ba4e",
     "url": "/train-game/static/media/line.2e3e852f.svg"
+  },
+  {
+    "revision": "7a9c9b0cb778ddb63a5a411ac36cadbc",
+    "url": "/train-game/static/media/padure.7a9c9b0c.svg"
   },
   {
     "revision": "9058840494ca3ca1d49a3e63ef25249d",
