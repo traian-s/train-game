@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { initBoard } from 'store/actions/board';
+import PropTypes from 'prop-types';
+import { initBoard, setPiece } from 'store/actions/board';
+import { initPlayers, playerMakeMove } from 'store/actions/game';
 import Piece from 'components/Piece';
 
 class Board extends Component {
@@ -13,20 +15,21 @@ class Board extends Component {
 
   componentDidMount() {
     const {
-      props: { initBoard }
+      props: { initBoard, initPlayers }
     } = this;
 
     initBoard();
+    initPlayers();
   }
 
   render() {
     const {
-      props: { rows, columns }
+      props: { board, rows, columns, setPiece, playerMakeMove, stage }
     } = this;
     return (
       <div className={'game-board'} style={{ width: `calc(80px * ${columns})` }}>
-        {[...Array(parseInt(rows))].map((_, i) => {
-          return [...Array(parseInt(columns))].map((_, j) => {
+        {board.map((row, i) =>
+          row.map((cell, j) => {
             return (
               <div
                 className={`cell 
@@ -38,16 +41,37 @@ class Board extends Component {
                 <Piece
                   x={i}
                   y={j}
+                  type={cell.type}
+                  rotate={cell.rotation}
+                  setPiece={setPiece}
+                  makeMove={playerMakeMove}
+                  stage={stage}
                 />
               </div>
             );
-          });
-        })}
+          })
+        )}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = { initBoard };
+const mapStateToProps = state => ({
+  board: state.board.map,
+  stage: state.game.turns.stage
+});
 
-export default connect(null, mapDispatchToProps)(Board);
+const mapDispatchToProps = { initBoard, initPlayers, setPiece, playerMakeMove };
+
+Board.propTypes = {
+  rows: PropTypes.number,
+  columns: PropTypes.number,
+  board: PropTypes.array,
+  initBoard: PropTypes.func,
+  initPlayers: PropTypes.func,
+  setPiece: PropTypes.func,
+  playerMakeMove: PropTypes.func,
+  stage: PropTypes.object
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
