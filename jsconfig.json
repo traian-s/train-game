@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "storage/*": ["node_modules/store/*"],
+      "@/*": ["src/*"],
+      "assets/*": ["src/assets/*"],
+      "audio/*": ["src/assets/audio/*"],
+      "components/*": ["src/components/*"],
+      "constants/*": ["src/constants/*"],
+      "images/*": ["src/assets/images/*"],
+      "store/*": ["src/store/*"],
+      "styles/*": ["src/styles/*"],
+      "utils/*": ["src/utils/*"],
+      "views/*": ["src/views/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
