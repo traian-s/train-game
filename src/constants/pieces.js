@@ -1,6 +1,6 @@
 // NORTH, EAST, SOUTH, WEST - CONNECTIONS ARE CLOCKWISE
 
-export const PIECE_TYPES = Object.freeze({
+export const PIECE_TYPES = {
   bridge: {
     type: 'bridge',
     connections: [1, 1, 1, 1],
@@ -31,7 +31,7 @@ export const PIECE_TYPES = Object.freeze({
     connections: [0, 0, 0, 0],
     allowRotate: false
   }
-});
+};
 
 // export Object.freeze(PIECE_TYPES);
 

@@ -2,17 +2,17 @@ import { PIECE_TYPES } from 'constants/pieces';
 
 export const GAME_STAGE = {
   FOREST: {
-    type: 'forest',
+    type: 'FOREST',
     moves: 3,
     piece: [PIECE_TYPES.forest.type]
   },
   STATIONS: {
-    type: 'stations',
+    type: 'STATIONS',
     moves: 2,
     piece: [PIECE_TYPES.station.type]
   },
   TRACKS: {
-    type: 'tracks',
+    type: 'TRACKS',
     moves: 1,
     piece: [
       PIECE_TYPES.bridge.type,

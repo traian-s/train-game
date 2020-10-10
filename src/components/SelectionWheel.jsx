@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PIECES from 'constants/assetsMap';
+import { GAME_STAGE } from 'constants/game';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +18,7 @@ export const SelectionWheel = ({
 }) => (
   <div className={'selection-wheel'}>
     {Object.keys(PIECES)
-      .filter(piece => stage.piece.includes(piece))
+      .filter(piece => GAME_STAGE[stage].piece.includes(piece))
       .map((key, idx) => {
         return (
           <div key={idx} className={`quadrant quadrant-${idx}`} onClick={() => setSelection(key)}>

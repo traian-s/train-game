@@ -1,14 +1,18 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
+import PropTypes from 'prop-types';
 
 import { SelectionWheel } from 'components/SelectionWheel';
 
 import PIECES from 'constants/assetsMap';
 import { PIECE_TYPES } from 'constants/pieces';
+import { GAME_STAGE } from 'constants/game';
 
 const actionTypes = {
   SET_ALLOW_ROTATE: 'SET_ALLOW_ROTATE',
   SET_TYPE: 'SET_TYPE',
   SET_ROTATE: 'SET_ROTATE',
+  SET_DISABLED: 'SET_DISABLED',
+  SET_ENABLED: 'SET_ENABLED',
   SHOW_SELECTION_WHEEL: 'SHOW_SELECTION_WHEEL',
   HIDE_SELECTION_WHEEL: 'HIDE_SELECTION_WHEEL'
 };
@@ -22,6 +26,10 @@ const reducer = (state, action) => {
       return { ...state, internalType: action.payload };
     case actionTypes.SET_ROTATE:
       return { ...state, internalRotate: action.payload };
+    case actionTypes.SET_ENABLED:
+      return { ...state, isEnabled: true };
+    case actionTypes.SET_DISABLED:
+      return { ...state, isEnabled: false };
     case actionTypes.SHOW_SELECTION_WHEEL:
       return { ...state, selectionWheel: true };
     case actionTypes.HIDE_SELECTION_WHEEL:
@@ -29,18 +37,24 @@ const reducer = (state, action) => {
   }
 };
 
-const Piece = ({ rotate, type, stage, x, y, setPiece }) => {
-  const [{ allowRotate, internalType, internalRotate, selectionWheel }, dispatch] = useReducer(
-    reducer,
-    {
-      allowRotate: false,
-      internalType: type,
-      internalRotate: rotate ? rotate : 0,
-      selectionWheel: false
-    }
-  );
+const Piece = ({ cornerPiece, enabled, rotation, type, stage, posX, posY, setPiece }) => {
+  const [
+    { allowRotate, internalType, internalRotate, isEnabled, selectionWheel },
+    dispatch
+  ] = useReducer(reducer, {
+    allowRotate: false,
+    internalType: type,
+    internalRotate: rotation ? rotation : 0,
+    isEnabled: true,
+    selectionWheel: false
+  });
 
-  const showWheel = () => dispatch({ type: actionTypes.SHOW_SELECTION_WHEEL });
+  useEffect(() => {
+    if (cornerPiece === true && GAME_STAGE[stage] === GAME_STAGE.STATIONS)
+      dispatch({ type: actionTypes.SET_DISABLED });
+  }, [stage]);
+
+  const showWheel = () => (isEnabled ? dispatch({ type: actionTypes.SHOW_SELECTION_WHEEL }) : null);
 
   const hideWheel = () => dispatch({ type: actionTypes.HIDE_SELECTION_WHEEL });
 
@@ -51,7 +65,7 @@ const Piece = ({ rotate, type, stage, x, y, setPiece }) => {
 
   const saveSelection = () => {
     hideWheel();
-    setPiece(x, y, internalType, internalRotate);
+    setPiece(posX, posY, internalType, internalRotate);
   };
 
   const setRotation = rotation => {
@@ -62,7 +76,11 @@ const Piece = ({ rotate, type, stage, x, y, setPiece }) => {
   };
 
   return (
-    <div className={`piece piece-${type} ${selectionWheel ? 'show-wheel' : ''}`}>
+    <div
+      className={`piece piece-${type} ${enabled ? 'enabled' : 'disabled'} ${
+        selectionWheel ? 'show-wheel' : ''
+      }`}
+    >
       <SelectionWheel
         allowRotate={allowRotate}
         hideWheel={hideWheel}
@@ -74,10 +92,20 @@ const Piece = ({ rotate, type, stage, x, y, setPiece }) => {
         stage={stage}
       />
       <div className={'piece-image'} onClick={() => showWheel()}>
-        {type && <img className={`rotate-${rotate}`} src={PIECES[type]} />}
+        {type && <img className={`rotate-${rotation}`} src={PIECES[type]} />}
       </div>
     </div>
   );
+};
+
+Piece.propTypes = {
+  cornerPiece: PropTypes.bool.isRequired,
+  rotation: PropTypes.number.isRequired,
+  type: PropTypes.oneOf([...Object.keys(PIECE_TYPES), '']).isRequired,
+  stage: PropTypes.oneOf([...Object.keys(GAME_STAGE), '']).isRequired,
+  posX: PropTypes.number.isRequired,
+  posY: PropTypes.number.isRequired,
+  setPiece: PropTypes.func.isRequired
 };
 
 export default Piece;

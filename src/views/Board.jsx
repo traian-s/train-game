@@ -15,6 +15,11 @@ const Board = ({ board, rows, columns, stage, setPiece, initBoard, initPlayers }
     <div className={'game-board'} style={{ width: `calc(80px * ${columns})` }}>
       {board.map((row, i) =>
         row.map((cell, j) => {
+          const isCornerPiece =
+            (i == 0 && j == 0) ||
+            (i == rows - 1 && j == columns - 1) ||
+            (i == 0 && j == columns - 1) ||
+            (i == rows - 1 && j == 0);
           return (
             <div
               className={`cell 
@@ -24,12 +29,12 @@ const Board = ({ board, rows, columns, stage, setPiece, initBoard, initPlayers }
               key={`cell-${i}${j}`}
             >
               <Piece
-                x={i}
-                y={j}
-                type={cell.type}
-                rotate={cell.rotation}
+                cornerPiece={isCornerPiece}
+                posX={i}
+                posY={j}
                 setPiece={setPiece}
                 stage={stage}
+                {...cell}
               />
             </div>
           );
@@ -40,8 +45,8 @@ const Board = ({ board, rows, columns, stage, setPiece, initBoard, initPlayers }
 };
 
 const mapStateToProps = state => ({
-  board: state.board.map,
-  stage: state.game.turns.stage
+  board: state.board.gameMap,
+  stage: state.game.turns.stage.type
 });
 
 const mapDispatchToProps = { initBoard, initPlayers, setPiece, playerMakeMove };

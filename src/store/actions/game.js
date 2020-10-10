@@ -8,6 +8,8 @@ import {
   PLAYER_MOVE_ADD
 } from 'store/types/game';
 
+import { enableAllPieces } from 'store/actions/board';
+
 export const setGameStage = stage => ({ type: SET_GAME_STAGE, payload: stage });
 export const setPlayerCount = playerCount => ({ type: SET_PLAYER_COUNT, payload: playerCount });
 export const setPlayers = players => ({ type: SET_PLAYERS, payload: players });
@@ -31,6 +33,7 @@ export const playerEndTurn = () => (dispatch, getState) => {
       activeTurn: { player }
     }
   } = getState();
+
   const activeIdx = players.findIndex(p => p.id === player.id);
   if (!players[activeIdx + 1]) dispatch(changeGameStage());
   const {
@@ -40,10 +43,12 @@ export const playerEndTurn = () => (dispatch, getState) => {
       }
     }
   } = getState();
+
   const nextPlayer = {
     player: players[activeIdx + 1] ? players[activeIdx + 1] : players[0],
     moves: { allowed: moves, executed: 0 }
   };
+  dispatch(enableAllPieces());
   dispatch(setActivePlayer(nextPlayer));
 };
 

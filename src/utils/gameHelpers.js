@@ -10,3 +10,13 @@ export const rotateConnections = (connections, rotation) => {
   }
   return connectionsCopy;
 };
+
+export const getAdjacentSquares = (posX, posY, rows, columns, padCount) => {
+  const adjacentSquares = [];
+  for (let i = posX - padCount; i <= posX + padCount; i++) {
+    for (let j = posY - padCount; j <= posY + padCount; j++) {
+      if (i >= 0 && i < rows && j >= 0 && j < columns) adjacentSquares.push([i, j]);
+    }
+  }
+  return adjacentSquares;
+};
