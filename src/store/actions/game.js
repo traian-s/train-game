@@ -65,6 +65,7 @@ export const initPlayers = () => (dispatch, getState) => {
   };
   dispatch(setActivePlayer(activePlayer));
 };
+
 export const playerMakeMove = () => (dispatch, getState) => {
   const {
     game: {

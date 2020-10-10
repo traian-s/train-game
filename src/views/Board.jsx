@@ -5,16 +5,7 @@ import { initBoard, setPiece } from 'store/actions/board';
 import { initPlayers, playerMakeMove } from 'store/actions/game';
 import Piece from 'components/Piece';
 
-const Board = ({
-  board,
-  rows,
-  columns,
-  stage,
-  setPiece,
-  playerMakeMove,
-  initBoard,
-  initPlayers
-}) => {
+const Board = ({ board, rows, columns, stage, setPiece, initBoard, initPlayers }) => {
   useEffect(() => {
     initBoard();
     initPlayers();
@@ -38,7 +29,6 @@ const Board = ({
                 type={cell.type}
                 rotate={cell.rotation}
                 setPiece={setPiece}
-                makeMove={playerMakeMove}
                 stage={stage}
               />
             </div>
@@ -63,7 +53,6 @@ Board.propTypes = {
   initBoard: PropTypes.func,
   initPlayers: PropTypes.func,
   setPiece: PropTypes.func,
-  playerMakeMove: PropTypes.func,
   stage: PropTypes.object
 };
 

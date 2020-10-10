@@ -14,6 +14,11 @@ export const GAME_STAGE = {
   TRACKS: {
     type: 'tracks',
     moves: 1,
-    piece: [PIECE_TYPES.bridge.type, PIECE_TYPES.curve.type, PIECE_TYPES.line.type, PIECE_TYPES.switch.type]
+    piece: [
+      PIECE_TYPES.bridge.type,
+      PIECE_TYPES.curve.type,
+      PIECE_TYPES.line.type,
+      PIECE_TYPES.switch.type
+    ]
   }
 };

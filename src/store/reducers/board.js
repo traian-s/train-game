@@ -20,7 +20,6 @@ export default (state = initialState, action) => {
       return { ...state, config: { ...state.config, columns: action.payload } };
 
     case SET_PIECE:
-      console.log(action.payload);
       return {
         ...state,
         map: Object.assign([...state.map], {
