@@ -1,10 +1,9 @@
 import React, { useReducer } from 'react';
 
+import { SelectionWheel } from 'components/SelectionWheel';
+
 import PIECES from 'constants/assetsMap';
 import { PIECE_TYPES } from 'constants/pieces';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUndo, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const actionTypes = {
   SET_ALLOW_ROTATE: 'SET_ALLOW_ROTATE',
@@ -30,7 +29,7 @@ const reducer = (state, action) => {
   }
 };
 
-const Piece = ({ rotate, type, stage, x, y, setPiece, makeMove }) => {
+const Piece = ({ rotate, type, stage, x, y, setPiece }) => {
   const [{ allowRotate, internalType, internalRotate, selectionWheel }, dispatch] = useReducer(
     reducer,
     {
@@ -53,7 +52,6 @@ const Piece = ({ rotate, type, stage, x, y, setPiece, makeMove }) => {
   const saveSelection = () => {
     hideWheel();
     setPiece(x, y, internalType, internalRotate);
-    makeMove();
   };
 
   const setRotation = rotation => {
@@ -65,39 +63,16 @@ const Piece = ({ rotate, type, stage, x, y, setPiece, makeMove }) => {
 
   return (
     <div className={`piece piece-${type} ${selectionWheel ? 'show-wheel' : ''}`}>
-      <div className={'selection-wheel'}>
-        {Object.keys(PIECES)
-          .filter(piece => stage.piece.includes(piece))
-          .map((key, idx) => {
-            return (
-              <div
-                key={idx}
-                className={`quadrant quadrant-${idx}`}
-                onClick={() => setSelection(key)}
-              >
-                <img src={PIECES[key]} />
-              </div>
-            );
-          })}
-        <div className={'selection-preview'} onClick={() => saveSelection()}>
-          {internalType && (
-            <img className={`rotate-${internalRotate}`} src={PIECES[internalType]} />
-          )}
-        </div>
-        {allowRotate && (
-          <>
-            <div className={'selection-rotate-right'} onClick={() => setRotation(90)}>
-              <FontAwesomeIcon icon={faUndo} />
-            </div>
-            <div className={'selection-rotate-left'} onClick={() => setRotation(-90)}>
-              <FontAwesomeIcon icon={faUndo} />
-            </div>
-          </>
-        )}
-        <div className={'selection-close'} onClick={() => hideWheel()}>
-          <FontAwesomeIcon icon={faTimes} />
-        </div>
-      </div>
+      <SelectionWheel
+        allowRotate={allowRotate}
+        hideWheel={hideWheel}
+        internalType={internalType}
+        internalRotate={internalRotate}
+        setSelection={setSelection}
+        saveSelection={saveSelection}
+        setRotation={setRotation}
+        stage={stage}
+      />
       <div className={'piece-image'} onClick={() => showWheel()}>
         {type && <img className={`rotate-${rotate}`} src={PIECES[type]} />}
       </div>
