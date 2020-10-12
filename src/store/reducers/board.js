@@ -5,6 +5,7 @@ import {
   SET_PIECE,
   ENABLE_PIECE,
   DISABLE_PIECE,
+  SET_LEGAL_MOVES,
   ENABLE_ALL_PIECES
 } from 'store/types/board';
 
@@ -64,6 +65,19 @@ export default (state = initialState, action) => {
           })
         })
       };
+
+    case SET_LEGAL_MOVES: {
+      return {
+        ...state,
+        gameMap: state.gameMap.map((rows, posX) =>
+          rows.map((cell, posY) =>
+            action.payload.moves.includes(`${posX},${posY}`)
+              ? { ...cell, enabled: true }
+              : { ...cell, enabled: false }
+          )
+        )
+      };
+    }
 
     case ENABLE_ALL_PIECES: {
       return {

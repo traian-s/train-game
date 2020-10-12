@@ -33,6 +33,8 @@ export const PIECE_TYPES = {
   }
 };
 
+export const DIRECTIONS = ['NORTH', 'EAST', 'SOUTH', 'WEST'];
+
 // export Object.freeze(PIECE_TYPES);
 
 // export PIECE_TYPES;

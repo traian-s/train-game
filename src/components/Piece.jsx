@@ -100,6 +100,7 @@ const Piece = ({ cornerPiece, enabled, rotation, type, stage, posX, posY, setPie
 
 Piece.propTypes = {
   cornerPiece: PropTypes.bool.isRequired,
+  enabled: PropTypes.bool.isRequired,
   rotation: PropTypes.number.isRequired,
   type: PropTypes.oneOf([...Object.keys(PIECE_TYPES), '']).isRequired,
   stage: PropTypes.oneOf([...Object.keys(GAME_STAGE), '']).isRequired,

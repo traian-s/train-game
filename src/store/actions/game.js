@@ -8,7 +8,7 @@ import {
   PLAYER_MOVE_ADD
 } from 'store/types/game';
 
-import { enableAllPieces } from 'store/actions/board';
+import { enableAllPieces, showLegalMoves } from 'store/actions/board';
 
 export const setGameStage = stage => ({ type: SET_GAME_STAGE, payload: stage });
 export const setPlayerCount = playerCount => ({ type: SET_PLAYER_COUNT, payload: playerCount });
@@ -63,10 +63,10 @@ export const initPlayers = () => (dispatch, getState) => {
   }));
 
   dispatch(setPlayers(players));
-  dispatch(setGameStage(GAME_STAGE.FOREST));
+  dispatch(setGameStage(GAME_STAGE.STATIONS));
   const activePlayer = {
     player: { ...players[0] },
-    moves: { allowed: GAME_STAGE.FOREST.moves, executed: 0 }
+    moves: { allowed: GAME_STAGE.STATIONS.moves, executed: 0 }
   };
   dispatch(setActivePlayer(activePlayer));
 };
@@ -82,6 +82,7 @@ export const playerMakeMove = () => (dispatch, getState) => {
 
   dispatch(playerMoveAdd());
   if (executed + 1 === allowed) dispatch(playerEndTurn());
+  dispatch(showLegalMoves());
 };
 
 export const setTurn = () => ({ type: SET_TURN });
