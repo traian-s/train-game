@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setColumns, setRows } from 'store/actions/board';
 import Board from 'views/Board';
+import MessageLog from 'components/MessageLog/MessageLog';
 
 function App({ rows, columns, setRows, setColumns, stage, activePlayer }) {
   return (
@@ -23,10 +24,12 @@ function App({ rows, columns, setRows, setColumns, stage, activePlayer }) {
           value={columns}
           onChange={e => setColumns(e.target.value)}
         />
-        <br/>
+        <br />
         <h3>Stage: {stage}</h3>
-        {activePlayer.player.name} make {activePlayer.moves.allowed - activePlayer.moves.executed} moves
+        {activePlayer.player.name} make {activePlayer.moves.allowed - activePlayer.moves.executed}{' '}
+        moves
       </div>
+      <MessageLog />
       <Board rows={rows} columns={columns} />
     </div>
   );

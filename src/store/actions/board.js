@@ -9,6 +9,7 @@ import {
   ENABLE_ALL_PIECES
 } from 'store/types/board';
 import { playerMakeMove } from 'store/actions/game';
+import { logMessage } from 'store/actions/log';
 
 import { PIECE_TYPES } from 'constants/pieces';
 import { GAME_STAGE } from 'constants/game';
@@ -17,6 +18,7 @@ import {
   getAdjacentSquares,
   getLegalMoves,
   isLegalStationPlacement,
+  isLegalTrackPlacement,
   rotateConnections
 } from 'utils/gameHelpers';
 
@@ -75,26 +77,40 @@ export const setPiece = (posX, posY, type, rotation) => (dispatch, getState) => 
         [posX]: {
           [posY]: { type: currentType, rotation: currentRotation }
         }
-      }
+      },
+      gameMap
     }
   } = getState();
 
   if (type === currentType && rotation === currentRotation) {
-    console.log(`No change registered. Not doing move.`);
+    dispatch(logMessage(`No change registered.`));
     return;
   }
 
   const connections = rotateConnections(PIECE_TYPES[type].connections, rotation);
 
   if (currentStage === GAME_STAGE.STATIONS.type) {
-    // console.log(currentStage);
-    if (!isLegalStationPlacement(posX, posY, rows, columns, connections)) return;
+    const { isLegal, errors } = isLegalStationPlacement(posX, posY, rows, columns, connections);
+    if (!isLegal) {
+      errors.map(err => dispatch(logMessage(err)));
+      return;
+    }
 
     const adjacentSquares = getAdjacentSquares(posX, posY, rows, columns, 2);
     console.log(adjacentSquares);
     adjacentSquares.map(square => {
       dispatch(disablePiece(...square));
     });
+  }
+
+  if (currentStage === GAME_STAGE.TRACKS.type) {
+    // We need to do something here...
+
+    const isLegal = isLegalTrackPlacement({ posX, posY, connections }, gameMap);
+    if (!isLegal) {
+      dispatch(logMessage(`Move is not legal.`));
+      return;
+    }
   }
 
   const piece = {
@@ -128,7 +144,5 @@ export const showLegalMoves = () => (dispatch, getState) => {
 
   const legalMoves = getLegalMoves(gameMap, id);
   const parsedMoves = legalMoves.map(el => el.join());
-  console.log(legalMoves);
-  console.log(legalMoves.map(el => el.join()));
   if (parsedMoves.length) dispatch(setLegalMoves(parsedMoves));
 };

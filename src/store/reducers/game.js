@@ -9,7 +9,7 @@ import {
 } from 'store/types/game';
 
 export const initialState = {
-  playerCount: 2,
+  playerCount: 1,
   players: {},
   turns: {
     count: 1,
