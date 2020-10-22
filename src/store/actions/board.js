@@ -15,8 +15,10 @@ import { PIECE_TYPES } from 'constants/pieces';
 import { GAME_STAGE } from 'constants/game';
 
 import {
+  areCellsConnected,
   getAdjacentSquares,
   getLegalMoves,
+  getPlayerStations,
   isLegalStationPlacement,
   isLegalTrackPlacement,
   rotateConnections
@@ -90,7 +92,7 @@ export const setPiece = (posX, posY, type, rotation) => (dispatch, getState) => 
   const connections = rotateConnections(PIECE_TYPES[type].connections, rotation);
 
   if (currentStage === GAME_STAGE.STATIONS.type) {
-    const { isLegal, errors } = isLegalStationPlacement(posX, posY, rows, columns, connections);
+    const { isLegal, errors } = isLegalStationPlacement({ posX, posY, connections }, rows, columns);
     if (!isLegal) {
       errors.map(err => dispatch(logMessage(err)));
       return;
@@ -124,7 +126,22 @@ export const setPiece = (posX, posY, type, rotation) => (dispatch, getState) => 
     rotation
   };
   dispatch(savePiece(posX, posY, piece));
+  dispatch(checkIsConnectionEstablished());
   dispatch(playerMakeMove());
+};
+
+export const checkIsConnectionEstablished = () => (dispatch, getState) => {
+  const {
+    game: {
+      activeTurn: {
+        player: { id }
+      }
+    },
+    board: { gameMap }
+  } = getState();
+  const [station1, station2] = getPlayerStations(gameMap, id);
+  if (areCellsConnected(station1, station2, gameMap))
+    dispatch(logMessage('Congratulations, you have established a connection!'));
 };
 
 export const showLegalMoves = () => (dispatch, getState) => {

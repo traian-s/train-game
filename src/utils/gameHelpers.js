@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-debugger */
 // export const isMatch = (pieceA, pieceB) => {};
-import { DIRECTIONS } from 'constants/pieces';
+import { DIRECTIONS, PIECE_TYPES } from 'constants/pieces';
 
 const fakeBoard = [
   [
@@ -540,16 +541,6 @@ export const rotateConnections = (connections, rotation) => {
   return connectionsCopy;
 };
 
-export const getAdjacentSquares = (posX, posY, rows, columns, padCount) => {
-  const adjacentSquares = [];
-  for (let i = posX - padCount; i <= posX + padCount; i++) {
-    for (let j = posY - padCount; j <= posY + padCount; j++) {
-      if (i >= 0 && i < rows && j >= 0 && j < columns) adjacentSquares.push([i, j]);
-    }
-  }
-  return adjacentSquares;
-};
-
 /**
  * Checks if provided cell belongs to the game map
  *
@@ -560,6 +551,16 @@ export const getAdjacentSquares = (posX, posY, rows, columns, padCount) => {
  */
 export const isOnMap = ({ posX, posY }, gameMap) => {
   return typeof gameMap[posX] !== 'undefined' && typeof gameMap[posX][posY] !== 'undefined';
+};
+
+export const getAdjacentSquares = (posX, posY, rows, columns, padCount) => {
+  const adjacentSquares = [];
+  for (let i = posX - padCount; i <= posX + padCount; i++) {
+    for (let j = posY - padCount; j <= posY + padCount; j++) {
+      if (i >= 0 && i < rows && j >= 0 && j < columns) adjacentSquares.push([i, j]);
+    }
+  }
+  return adjacentSquares;
 };
 
 /**
@@ -586,10 +587,7 @@ export const getAdjacentDirections = ({ posX, posY, connections = [1, 1, 1, 1] }
 };
 
 /**
- * Given a cell and a game map will return all adjacent cells that are on the map
- * If connections is provided then it will only return the cells that
- * can be reached considering connections. Otherwise returns all cells
- * regardless of connection
+ * Takes the result of getAdjacentDirections and returns actual cells
  *
  * @param {object} cell a cell object
  * @param {object} gameMap a gameMap object
@@ -601,31 +599,22 @@ export const getAdjacentCells = ({ posX, posY, connections = [1, 1, 1, 1] }, gam
   return directions.map(([x, y]) => gameMap[x][y]) || [];
 };
 
-export const isCellOccupied = ({ occupied }) => occupied !== false;
-
-export const isLegalConnection = (
-  { posX: fromX, posY: fromY, connections: fromConnections },
-  { posX: toX, posY: toY, connections: toConnections }
-) => {
-  const direction = `${fromX - toX}${fromY - toY}`;
-  switch (direction) {
-    case '10': {
-      // Piece 1 is south of piece 2
-      return fromConnections[0] === toConnections[2];
-    }
-    case '0-1': {
-      // Piece 1 is west of piece 2
-      return fromConnections[1] === toConnections[3];
-    }
-    case '-10': {
-      // Piece 1 is north of piece 2
-      return fromConnections[2] === toConnections[0];
-    }
-    case '01': {
-      // Piece 1 is east of piece 2
-      return fromConnections[3] === toConnections[1];
-    }
-  }
+/**
+ * Given a cell and a game map returns all adjacent cells
+ * that the current cell is connected to: it must have a connection
+ * to that cell && that cell must have a connection back to it
+ *
+ * @param {object} cell a cell object
+ * @param {object} gameMap a game map object
+ *
+ * @returns {array} an array of cells or empty
+ */
+export const getConnectedCells = ({ posX, posY, connections }, gameMap) => {
+  const adjacentCells = getAdjacentCells({ posX, posY }, gameMap);
+  return adjacentCells
+    .filter(cell => cell.occupied === true)
+    .filter(cell => isLegalConnection({ posX, posY, connections }, cell, true));
+  // console.log(`[getConnectedCells]: `, connectedCells);
 };
 
 export const getLegalMoves = (gameMap, player) => {
@@ -644,7 +633,74 @@ export const getLegalMoves = (gameMap, player) => {
   return legalMoves;
 };
 
-export const isLegalStationPlacement = (posX, posY, rows, columns, connections) => {
+/**
+ * Provided a gameMap and a player ID
+ * Will return the two cells representing the players stations
+ *
+ * @param {object} gameMap a game map object
+ * @param {number} player  a player id
+ *
+ * @returns {array} an array of cells
+ */
+export const getPlayerStations = (gameMap, player) => {
+  return gameMap.reduce((acc, curr) => {
+    const station = curr.filter(
+      cell => cell.ownerId === player && cell.type === PIECE_TYPES.station.type
+    );
+    return station.length ? [...acc, ...station] : acc;
+  }, []);
+};
+
+export const isCellOccupied = ({ occupied }) => occupied !== false;
+
+/**
+ * Given two adjacent cells it verifies their position in relation to eachother
+ * and returns true if a connection is satisfied between them: both must have either no connection
+ * to eachother OR they must both have a connection to eachother
+ * If provided with forceConnection flag then it will only return true
+ * if both have connection to eachother
+ *
+ * @param {object} fromCell a from cell object
+ * @param {object} toCell a to cell object
+ * @param {*} forceConnection
+ */
+export const isLegalConnection = (
+  { posX: fromX, posY: fromY, connections: fromConnections },
+  { posX: toX, posY: toY, connections: toConnections },
+  forceConnection = false
+) => {
+  const direction = `${fromX - toX}${fromY - toY}`;
+  switch (direction) {
+    case '10': {
+      // Piece 1 is south of piece 2
+      return forceConnection
+        ? fromConnections[0] && toConnections[2]
+        : fromConnections[0] === toConnections[2];
+    }
+    case '0-1': {
+      // Piece 1 is west of piece 2
+      return forceConnection
+        ? fromConnections[1] && toConnections[3]
+        : fromConnections[1] === toConnections[3];
+    }
+    case '-10': {
+      // Piece 1 is north of piece 2
+      return forceConnection
+        ? fromConnections[2] && toConnections[0]
+        : fromConnections[2] === toConnections[0];
+    }
+    case '01': {
+      // Piece 1 is east of piece 2
+      return forceConnection
+        ? fromConnections[3] && toConnections[1]
+        : fromConnections[3] === toConnections[1];
+    }
+    default:
+      return false;
+  }
+};
+
+export const isLegalStationPlacement = ({ posX, posY, connections }, rows, columns) => {
   let isLegal = true;
   const errors = [];
 
@@ -686,4 +742,40 @@ export const isLegalTrackPlacement = ({ posX, posY, connections }, gameMap) => {
   // A piece that directs only outside the map is not legal
   const connectedCells = getAdjacentCells({ posX, posY, connections }, gameMap);
   return connectionLegal && connectedCells.length >= 2;
+};
+
+export const areCellsConnected = (fromCell, toCell, gameMap, previousCell = {}) => {
+  console.log(`[areCellsConnected] called`);
+  if (fromCell?.posX === toCell?.posX && fromCell?.posY === toCell?.posY) {
+    // We have reached the end of the connection
+    console.log('cells are connected yay');
+    return true;
+  }
+
+  const connectedCells = getConnectedCells(fromCell, gameMap);
+  console.log(
+    `[areCellsConnected] connected cells found for ${fromCell.posX} ${fromCell.posY}:`,
+    connectedCells
+  );
+  if (!connectedCells.length) return false; // We have reached the end of this path and there is no connection
+
+  console.log(`[areCellsConnected]: previous cell is ${previousCell.posX} ${previousCell.posY}`);
+  console.log(
+    `[areCellsConnected] filtering out previous cells leaves:`,
+    connectedCells.filter(
+      cell => cell.posX !== previousCell.posX && cell.posY !== previousCell.posY
+    )
+  );
+
+  return connectedCells
+    .filter(cell => cell.posX !== previousCell.posX || cell.posY !== previousCell.posY)
+    .map(cell => areCellsConnected(cell, toCell, gameMap, fromCell))
+    .some(connection => connection === true);
+
+  // TODO:
+  // Starting from fromCell
+  // For each connected cell
+  // Is it toCell?
+  // If not areCellsConnected of this cell
+  // Possibly build path array
 };
