@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import {
   SET_BOARD,
   SET_ROWS,
@@ -8,7 +9,7 @@ import {
   DISABLE_PIECE,
   ENABLE_ALL_PIECES
 } from 'store/types/board';
-import { playerMakeMove } from 'store/actions/game';
+import { playerMakeMove, playerSetConnections } from 'store/actions/game';
 import { logMessage } from 'store/actions/log';
 
 import { PIECE_TYPES } from 'constants/pieces';
@@ -17,6 +18,7 @@ import { GAME_STAGE } from 'constants/game';
 import {
   areCellsConnected,
   getAdjacentSquares,
+  getConnectedCells,
   getLegalMoves,
   getPlayerStations,
   isLegalStationPlacement,
@@ -139,9 +141,41 @@ export const checkIsConnectionEstablished = () => (dispatch, getState) => {
     },
     board: { gameMap }
   } = getState();
-  const [station1, station2] = getPlayerStations(gameMap, id);
-  if (areCellsConnected(station1, station2, gameMap))
-    dispatch(logMessage('Congratulations, you have established a connection!'));
+  const [fromStation, toStation] = getPlayerStations(gameMap, id);
+
+  const fromStationExits = getConnectedCells(fromStation, gameMap);
+  const toStationExits = getConnectedCells(toStation, gameMap);
+
+  if (!fromStationExits.length || !toStationExits.length) return;
+  const fromToConnection = fromStationExits
+    .map(fromExit =>
+      toStationExits
+        .map(toExit => areCellsConnected(fromExit, toExit, gameMap))
+        .some(conn => conn === true)
+    )
+    .filter(conn => conn === true).length;
+
+  const toFromConnection = toStationExits
+    .map(toExit =>
+      fromStationExits
+        .map(fromExit => areCellsConnected(toExit, fromExit, gameMap))
+        .some(conn => conn === true)
+    )
+    .filter(conn => conn === true).length;
+
+  const distinctConnections = Math.min(fromToConnection, toFromConnection);
+
+  if (distinctConnections) dispatch(playerSetConnections(id, distinctConnections));
+
+  console.log(`[checkIsConnectionEstablished]: Distinct connections found`, distinctConnections);
+
+  // .filter(connection => connection === true);
+
+  // eslint-disable-next-line no-alert
+  // if (connections.length === 2) alert('You have won the game good sir');
+
+  // if (areCellsConnected(station1, station2, gameMap))
+  //   dispatch(logMessage('Congratulations, you have established a connection!'));
 };
 
 export const showLegalMoves = () => (dispatch, getState) => {

@@ -609,7 +609,9 @@ export const getAdjacentCells = ({ posX, posY, connections = [1, 1, 1, 1] }, gam
  *
  * @returns {array} an array of cells or empty
  */
-export const getConnectedCells = ({ posX, posY, connections }, gameMap) => {
+export const getConnectedCells = ({ posX, posY, connections } = {}, gameMap) => {
+  console.log(`Called with ${posX} ${posY}`);
+  if (!posX || !posY) return [];
   const adjacentCells = getAdjacentCells({ posX, posY }, gameMap);
   return adjacentCells
     .filter(cell => cell.occupied === true)
@@ -744,19 +746,30 @@ export const isLegalTrackPlacement = ({ posX, posY, connections }, gameMap) => {
   return connectionLegal && connectedCells.length >= 2;
 };
 
+/**
+ * Given a fromCell, a toCell and a gameMap returns true if there is a
+ * path between fromCell and toCell
+ *
+ * @param {object} fromCell A cell object
+ * @param {object} toCell A cell object
+ * @param {object} gameMap A game map object
+ * @param {object} previousCell A cell object
+ *
+ * @returns {bool} Whether the cells are connected or not
+ */
 export const areCellsConnected = (fromCell, toCell, gameMap, previousCell = {}) => {
-  console.log(`[areCellsConnected] called`);
+  console.log(`[areCellsConnected] called with:`, fromCell, toCell, gameMap);
+  if (!fromCell || !toCell || !gameMap) return false;
+
+  // Don't pass through a station to determine a connection; avoids breaking loops
+  if (fromCell.type === PIECE_TYPES.station.type) return false;
+
   if (fromCell?.posX === toCell?.posX && fromCell?.posY === toCell?.posY) {
     // We have reached the end of the connection
-    console.log('cells are connected yay');
     return true;
   }
 
   const connectedCells = getConnectedCells(fromCell, gameMap);
-  console.log(
-    `[areCellsConnected] connected cells found for ${fromCell.posX} ${fromCell.posY}:`,
-    connectedCells
-  );
   if (!connectedCells.length) return false; // We have reached the end of this path and there is no connection
 
   console.log(`[areCellsConnected]: previous cell is ${previousCell.posX} ${previousCell.posY}`);
@@ -771,11 +784,4 @@ export const areCellsConnected = (fromCell, toCell, gameMap, previousCell = {}) 
     .filter(cell => cell.posX !== previousCell.posX || cell.posY !== previousCell.posY)
     .map(cell => areCellsConnected(cell, toCell, gameMap, fromCell))
     .some(connection => connection === true);
-
-  // TODO:
-  // Starting from fromCell
-  // For each connected cell
-  // Is it toCell?
-  // If not areCellsConnected of this cell
-  // Possibly build path array
 };

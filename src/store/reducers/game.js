@@ -5,22 +5,24 @@ import {
   SET_TURN,
   SET_GAME_STAGE,
   SET_ACTIVE_PLAYER,
-  PLAYER_MOVE_ADD
+  PLAYER_MOVE_ADD,
+  PLAYER_SET_CONNECTIONS
 } from 'store/types/game';
 
 export const initialState = {
-  playerCount: 1,
-  players: {},
-  turns: {
-    count: 1,
-    stage: ''
-  },
   activeTurn: {
     player: {},
     moves: {
       allowed: 0,
       executed: 0
     }
+  },
+  establishedConnections: {},
+  playerCount: 1,
+  players: {},
+  turns: {
+    count: 1,
+    stage: ''
   }
 };
 
@@ -28,6 +30,22 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case INIT_PLAYERS:
       return { ...state, players: { ...action.payload } };
+    case PLAYER_MOVE_ADD:
+      return {
+        ...state,
+        activeTurn: {
+          ...state.activeTurn,
+          moves: { ...state.activeTurn.moves, executed: state.activeTurn.moves.executed + 1 }
+        }
+      };
+    case PLAYER_SET_CONNECTIONS:
+      return {
+        ...state,
+        establishedConnections: {
+          ...state.establishedConnections,
+          [action.payload.player]: action.payload.connections
+        }
+      };
     case SET_TURN:
       return { ...state, turns: { ...state.turns, active: action.payload } };
     case SET_PLAYER_COUNT:
@@ -38,14 +56,6 @@ export default (state = initialState, action) => {
       return { ...state, turns: { ...state.turns, stage: action.payload } };
     case SET_ACTIVE_PLAYER:
       return { ...state, activeTurn: action.payload };
-    case PLAYER_MOVE_ADD:
-      return {
-        ...state,
-        activeTurn: {
-          ...state.activeTurn,
-          moves: { ...state.activeTurn.moves, executed: state.activeTurn.moves.executed + 1 }
-        }
-      };
     default:
       return state;
   }
