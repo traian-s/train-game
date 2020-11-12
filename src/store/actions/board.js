@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-debugger */
 import {
   SET_BOARD,
@@ -100,11 +101,11 @@ export const setPiece = (posX, posY, type, rotation) => (dispatch, getState) => 
       return;
     }
 
-    const adjacentSquares = getAdjacentSquares(posX, posY, rows, columns, 2);
-    console.log(adjacentSquares);
-    adjacentSquares.map(square => {
-      dispatch(disablePiece(...square));
-    });
+    // const adjacentSquares = getAdjacentSquares(posX, posY, rows, columns, 2);
+    // console.log(adjacentSquares);
+    // adjacentSquares.map(square => {
+    //   dispatch(disablePiece(...square));
+    // });
   }
 
   if (currentStage === GAME_STAGE.TRACKS.type) {

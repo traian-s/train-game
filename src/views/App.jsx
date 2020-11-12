@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { setColumns, setRows } from 'store/actions/board';
 import Board from 'views/Board';
 import MessageLog from 'components/MessageLog/MessageLog';
+import Draggable from 'components/Draggable/index';
 
 function App({ rows, columns, setRows, setColumns, stage, activePlayer }) {
   return (
@@ -31,6 +32,7 @@ function App({ rows, columns, setRows, setColumns, stage, activePlayer }) {
       </div>
       <MessageLog />
       <Board rows={rows} columns={columns} />
+      <Draggable />
     </div>
   );
 }
@@ -48,6 +50,7 @@ const mapDispatchToProps = {
 };
 
 App.propTypes = {
+  activePlayer: PropTypes.object,
   rows: PropTypes.number,
   columns: PropTypes.number,
   setRows: PropTypes.func,

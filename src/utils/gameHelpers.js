@@ -610,7 +610,6 @@ export const getAdjacentCells = ({ posX, posY, connections = [1, 1, 1, 1] }, gam
  * @returns {array} an array of cells or empty
  */
 export const getConnectedCells = ({ posX, posY, connections } = {}, gameMap) => {
-  console.log(`Called with ${posX} ${posY}`);
   if (!posX || !posY) return [];
   const adjacentCells = getAdjacentCells({ posX, posY }, gameMap);
   return adjacentCells

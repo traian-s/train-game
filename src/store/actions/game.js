@@ -1,12 +1,17 @@
-import { GAME_STAGE } from 'constants/game';
+/* eslint-disable no-console */
+import { GAME_STAGE, GAME_STAGE_ORDER, PIECE_COUNT } from 'constants/game';
 import {
   SET_TURN,
   SET_PLAYER_COUNT,
   SET_PLAYERS,
   SET_ACTIVE_PLAYER,
   SET_GAME_STAGE,
+  SET_PIECES,
+  SET_MOVE_DROP_TARGET,
+  SET_MOVE_HOVER_TARGET,
   PLAYER_MOVE_ADD,
-  PLAYER_SET_CONNECTIONS
+  PLAYER_SET_CONNECTIONS,
+  SET_MOVE_PIECE_TYPE
 } from 'store/types/game';
 
 import { enableAllPieces, showLegalMoves } from 'store/actions/board';
@@ -16,6 +21,12 @@ export const setGameStage = stage => ({ type: SET_GAME_STAGE, payload: stage });
 export const setPlayerCount = playerCount => ({ type: SET_PLAYER_COUNT, payload: playerCount });
 export const setPlayers = players => ({ type: SET_PLAYERS, payload: players });
 export const setActivePlayer = player => ({ type: SET_ACTIVE_PLAYER, payload: player });
+export const setTurn = () => ({ type: SET_TURN });
+export const setPieces = pieces => ({ type: SET_PIECES, payload: pieces });
+export const setMoveDropTarget = point => ({ type: SET_MOVE_DROP_TARGET, payload: point });
+export const setMoveHoverTarget = point => ({ type: SET_MOVE_HOVER_TARGET, payload: point });
+export const setMovePieceType = type => ({ type: SET_MOVE_PIECE_TYPE, payload: type });
+
 export const playerMoveAdd = () => ({ type: PLAYER_MOVE_ADD });
 export const playerSaveConnections = (player, connections) => ({
   type: PLAYER_SET_CONNECTIONS,
@@ -25,11 +36,19 @@ export const playerSaveConnections = (player, connections) => ({
 export const changeGameStage = () => (dispatch, getState) => {
   const {
     game: {
-      turns: { stage }
+      turns: {
+        stage: { type: currentStage }
+      }
     }
   } = getState();
-  stage === GAME_STAGE.FOREST && dispatch(setGameStage(GAME_STAGE.STATIONS));
-  stage === GAME_STAGE.STATIONS && dispatch(setGameStage(GAME_STAGE.TRACKS));
+  try {
+    const nextStageIdx = GAME_STAGE_ORDER.indexOf(currentStage) + 1;
+    const nextStage = GAME_STAGE_ORDER[nextStageIdx];
+    dispatch(setGameStage(GAME_STAGE[nextStage]));
+    dispatch(setPiecesByStage(GAME_STAGE[nextStage]));
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const initPlayers = () => (dispatch, getState) => {
@@ -43,12 +62,26 @@ export const initPlayers = () => (dispatch, getState) => {
   }));
 
   dispatch(setPlayers(players));
-  dispatch(setGameStage(GAME_STAGE.STATIONS));
+  dispatch(setGameStage(GAME_STAGE.FOREST));
+  dispatch(setPiecesByStage(GAME_STAGE.FOREST));
   const activePlayer = {
     player: { ...players[0] },
-    moves: { allowed: GAME_STAGE.STATIONS.moves, executed: 0 }
+    moves: { allowed: GAME_STAGE.FOREST.moves, executed: 0 }
   };
   dispatch(setActivePlayer(activePlayer));
+};
+
+export const initPieces = () => dispatch => {
+  const pieces = GAME_STAGE.FOREST.piece.map(piece => ({ type: piece, count: PIECE_COUNT[piece] }));
+  dispatch(setPieces(pieces));
+};
+
+export const setPiecesByStage = ({ type: stage }) => dispatch => {
+  const pieces = GAME_STAGE[stage]?.piece.map(piece => ({
+    type: piece,
+    count: PIECE_COUNT[piece]
+  }));
+  pieces?.length && dispatch(setPieces(pieces));
 };
 
 export const playerConnectionEstablishedEvent = (player, connection) => dispatch => {
@@ -61,12 +94,20 @@ export const playerEndTurn = () => (dispatch, getState) => {
   const {
     game: {
       players,
-      activeTurn: { player }
+      activeTurn: { player },
+      turns: {
+        stage: { type: stageType }
+      }
     }
   } = getState();
 
+  console.log(`[playerEndTurn]: ACTIVE STAGE IS ${stageType}`);
+  console.log(GAME_STAGE.STATIONS.type);
+
   const activeIdx = players.findIndex(p => p.id === player.id);
-  if (!players[activeIdx + 1]) dispatch(changeGameStage());
+
+  if (!players[activeIdx + 1] && stageType !== GAME_STAGE.TRACKS.type) dispatch(changeGameStage());
+
   const {
     game: {
       turns: {
@@ -107,5 +148,3 @@ export const playerSetConnections = (player, connections) => (dispatch, getState
     dispatch(playerSaveConnections(player, connections));
   }
 };
-
-export const setTurn = () => ({ type: SET_TURN });

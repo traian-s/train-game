@@ -22,3 +22,14 @@ export const GAME_STAGE = {
     ]
   }
 };
+
+export const PIECE_COUNT = {
+  forest: 3,
+  station: 2,
+  bridge: 2,
+  curve: 8,
+  line: 8,
+  switch: 2
+};
+
+export const GAME_STAGE_ORDER = ['FOREST', 'STATIONS', 'TRACKS'];

@@ -4,22 +4,26 @@ export const PIECE_TYPES = {
   bridge: {
     type: 'bridge',
     connections: [1, 1, 1, 1],
-    allowRotate: true
+    allowRotate: true,
+    defaultCount: 4
   },
   curve: {
     type: 'curve',
     connections: [1, 1, 0, 0],
-    allowRotate: true
+    allowRotate: true,
+    defaultCount: 8
   },
   line: {
     type: 'line',
     connections: [0, 1, 0, 1],
-    allowRotate: true
+    allowRotate: true,
+    defaultCount: 16
   },
   switch: {
     type: 'switch',
     connections: [1, 1, 0, 1],
-    allowRotate: true
+    allowRotate: true,
+    defaultCount: 4
   },
   station: {
     type: 'station',

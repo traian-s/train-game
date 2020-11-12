@@ -5,7 +5,20 @@ import { initBoard, setPiece } from 'store/actions/board';
 import { initPlayers, playerMakeMove } from 'store/actions/game';
 import Piece from 'components/Piece';
 
-const Board = ({ board, rows, columns, stage, setPiece, initBoard, initPlayers }) => {
+const Board = ({
+  board,
+  dropTargetX,
+  dropTargetY,
+  hoverTargetX,
+  hoverTargetY,
+  targetPiece,
+  rows,
+  columns,
+  stage,
+  setPiece,
+  initBoard,
+  initPlayers
+}) => {
   useEffect(() => {
     initBoard();
     initPlayers();
@@ -34,6 +47,11 @@ const Board = ({ board, rows, columns, stage, setPiece, initBoard, initPlayers }
                 posY={j}
                 setPiece={setPiece}
                 stage={stage}
+                dropTargetX={dropTargetX}
+                dropTargetY={dropTargetY}
+                hoverTargetX={hoverTargetX}
+                hoverTargetY={hoverTargetY}
+                targetPiece={targetPiece}
                 {...cell}
               />
             </div>
@@ -44,19 +62,44 @@ const Board = ({ board, rows, columns, stage, setPiece, initBoard, initPlayers }
   );
 };
 
-const mapStateToProps = state => ({
-  board: state.board.gameMap,
-  stage: state.game.turns.stage.type
+const mapStateToProps = ({
+  board: { gameMap: board },
+  game: {
+    turns: {
+      stage: { type: stage }
+    },
+    activeTurn: {
+      moveDetails: {
+        dropTarget: { clientX: dropTargetX, clientY: dropTargetY } = {},
+        hoverTarget: { clientX: hoverTargetX, clientY: hoverTargetY } = {},
+        piece: targetPiece = ''
+      } = {}
+    }
+  }
+}) => ({
+  board,
+  stage,
+  dropTargetX,
+  dropTargetY,
+  hoverTargetX,
+  hoverTargetY,
+  targetPiece
 });
 
 const mapDispatchToProps = { initBoard, initPlayers, setPiece, playerMakeMove };
 
 Board.propTypes = {
-  rows: PropTypes.number,
-  columns: PropTypes.number,
   board: PropTypes.array,
+  columns: PropTypes.number,
+  dropTarget: PropTypes.object,
+  dropTargetX: PropTypes.number,
+  dropTargetY: PropTypes.number,
+  hoverTargetX: PropTypes.number,
+  hoverTargetY: PropTypes.number,
+  targetPiece: PropTypes.string,
   initBoard: PropTypes.func,
   initPlayers: PropTypes.func,
+  rows: PropTypes.number,
   setPiece: PropTypes.func,
   stage: PropTypes.object
 };

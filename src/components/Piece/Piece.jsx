@@ -1,11 +1,13 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useRef, useReducer, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { SelectionWheel } from 'components/SelectionWheel';
+import { SelectionWheel } from './SelectionWheel';
 
 import PIECES from 'constants/assetsMap';
 import { PIECE_TYPES } from 'constants/pieces';
 import { GAME_STAGE } from 'constants/game';
+
+import styles from './Piece.module';
 
 const actionTypes = {
   SET_ALLOW_ROTATE: 'SET_ALLOW_ROTATE',
@@ -18,7 +20,6 @@ const actionTypes = {
 };
 
 const reducer = (state, action) => {
-  console.log(`${action.type} called with payload: ${action.payload}`);
   switch (action.type) {
     case actionTypes.SET_ALLOW_ROTATE:
       return { ...state, allowRotate: action.payload };
@@ -37,7 +38,21 @@ const reducer = (state, action) => {
   }
 };
 
-const Piece = ({ cornerPiece, enabled, rotation, type, stage, posX, posY, setPiece }) => {
+const Piece = ({
+  cornerPiece,
+  dropTargetX,
+  dropTargetY,
+  hoverTargetX,
+  hoverTargetY,
+  targetPiece,
+  enabled,
+  rotation,
+  type,
+  stage,
+  posX,
+  posY,
+  setPiece
+}) => {
   const [
     { allowRotate, internalType, internalRotate, isEnabled, selectionWheel },
     dispatch
@@ -49,10 +64,39 @@ const Piece = ({ cornerPiece, enabled, rotation, type, stage, posX, posY, setPie
     selectionWheel: false
   });
 
+  const pieceRef = useRef(null);
+  const boundingBox = useRef(null);
+
+  useLayoutEffect(() => {
+    boundingBox.current = pieceRef.current.getBoundingClientRect();
+  }, []);
+
   useEffect(() => {
     if (cornerPiece === true && GAME_STAGE[stage] === GAME_STAGE.STATIONS)
       dispatch({ type: actionTypes.SET_DISABLED });
   }, [stage]);
+
+  useEffect(() => {
+    const { left, right, top, bottom } = pieceRef.current.getBoundingClientRect();
+    if (left < dropTargetX && dropTargetX < right && top < dropTargetY && dropTargetY < bottom) {
+      console.log(`Piece ${posX}${posY} reporting for duty sir!`);
+      setPiece(posX, posY, targetPiece, 0);
+    }
+  }, [dropTargetX, dropTargetY]);
+
+  useEffect(() => {
+    const { left, right, top, bottom } = boundingBox.current;
+    // const { left, right, top, bottom } = pieceRef.current.getBoundingClientRect();
+    if (
+      left < hoverTargetX &&
+      hoverTargetX < right &&
+      top < hoverTargetY &&
+      hoverTargetY < bottom
+    ) {
+      console.log(`Piece ${posX}${posY} is being hovered!`);
+      //setPiece(posX, posY, targetPiece, 0);
+    }
+  }, [hoverTargetX, hoverTargetY]);
 
   const showWheel = () => (isEnabled ? dispatch({ type: actionTypes.SHOW_SELECTION_WHEEL }) : null);
 
@@ -77,9 +121,10 @@ const Piece = ({ cornerPiece, enabled, rotation, type, stage, posX, posY, setPie
 
   return (
     <div
-      className={`piece piece-${type} ${enabled ? 'enabled' : 'disabled'} ${
+      className={`${styles.piece} piece piece-${type} ${enabled ? 'enabled' : 'disabled'} ${
         selectionWheel ? 'show-wheel' : ''
       }`}
+      ref={pieceRef}
     >
       <SelectionWheel
         allowRotate={allowRotate}
@@ -106,7 +151,12 @@ Piece.propTypes = {
   stage: PropTypes.oneOf([...Object.keys(GAME_STAGE), '']).isRequired,
   posX: PropTypes.number.isRequired,
   posY: PropTypes.number.isRequired,
-  setPiece: PropTypes.func.isRequired
+  setPiece: PropTypes.func.isRequired,
+  dropTargetX: PropTypes.number,
+  dropTargetY: PropTypes.number,
+  hoverTargetX: PropTypes.number,
+  hoverTargetY: PropTypes.number,
+  targetPiece: PropTypes.string
 };
 
 export default Piece;
